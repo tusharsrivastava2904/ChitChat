@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class SignUp : AppCompatActivity() {
 
@@ -18,7 +20,7 @@ class SignUp : AppCompatActivity() {
     private lateinit var btnSignup: Button
 
     private lateinit var mAuth: FirebaseAuth
-
+    private lateinit var mDBRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,26 +35,38 @@ class SignUp : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         btnSignup.setOnClickListener{
+            val name = edtName.text.toString()
             val email = edtEmail.text.toString()
             val pass = edtPass.text.toString()
 
-            signup(email, pass)
+            signup(name, email, pass)
         }
 
     }
 
-    private fun signup(email: String, pass: String) {
+    private fun signup(name: String, email: String, pass: String) {
         //logic of creating user
         mAuth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
+
+                        //add user to database
+                        addUserToDB(name, email, mAuth.currentUser?.uid!!)
+
                     val intent = Intent(this@SignUp,MainActivity::class.java)
+                    finish()
                     startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(this@SignUp,"Sign-Up Failed", Toast.LENGTH_LONG).show()
                 }
             }
+    }
+
+    private fun addUserToDB(name: String, email: String, uid: String) {
+        mDBRef = FirebaseDatabase.getInstance().getReference()
+
+        mDBRef.child("user").child(uid).setValue(UserModel(name, email, uid))
     }
 }

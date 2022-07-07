@@ -10,4 +10,6 @@
 
     <color name="blue">#38b6ff</color>
     <color name="darkBlue">#004aad</color>
+    <color name="gray">#7F7F80</color>
+
 </resources>

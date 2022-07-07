@@ -53,6 +53,7 @@ class Login : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     val intent = Intent(this@Login, MainActivity::class.java)
                     Toast.makeText(this@Login, "Logged-in Successfully!", Toast.LENGTH_SHORT).show()
+                    finish()
                     startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
