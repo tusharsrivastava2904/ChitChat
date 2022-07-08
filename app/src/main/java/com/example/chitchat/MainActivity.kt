@@ -1,5 +1,6 @@
 package com.example.chitchat
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,17 +26,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mAuth = FirebaseAuth.getInstance()
-        mDBRef = FirebaseDatabase.getInstance().getReference()
+        mDBRef = FirebaseDatabase.getInstance().reference
 
         userList = ArrayList()
         adapter = UserAdapter(this, userList)
 
         userRV = findViewById(R.id.user_list_rv)
+        userRV.isNestedScrollingEnabled = true;
 
-        userRV.layoutManager = LinearLayoutManager(this)
         userRV.adapter = adapter
+        userRV.layoutManager = LinearLayoutManager(this)
 
         mDBRef.child("user").addValueEventListener(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
                 for (postSnapshot in snapshot.children){

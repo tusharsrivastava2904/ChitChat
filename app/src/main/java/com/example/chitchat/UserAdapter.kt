@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class UserAdapter(val context: Context, val userList: ArrayList<UserModel>): RecyclerView.Adapter<UserAdapter.UserViewHolder>(){
+class UserAdapter(val context: Context, private val userList: ArrayList<UserModel>): RecyclerView.Adapter<UserAdapter.UserViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        val view:View = LayoutInflater.from(context).inflate(R.layout.user_list_rv, parent, false)
+        val view:View = LayoutInflater.from(parent.context).inflate(R.layout.user_list_rv, parent, false)
         return UserViewHolder(view)
     }
 
@@ -27,4 +27,5 @@ class UserAdapter(val context: Context, val userList: ArrayList<UserModel>): Rec
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val user_name_rv = itemView.findViewById<TextView>(R.id.user_name)
     }
+
 }
